@@ -1,17 +1,14 @@
-
 import React from 'react';
 import { Headphones } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-
 const Navbar = () => {
-  return (
-    <nav className="w-full border-b border-border py-4 px-6">
+  return <nav className="w-full border-b border-border py-4 px-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <div className="h-8 w-8 bg-beat-vibrantPurple rounded-lg flex items-center justify-center">
             <Headphones className="h-5 w-5 text-white" />
           </div>
-          <span className="text-xl font-bold">Beat Detective</span>
+          <span className="text-xl font-bold">TrackID</span>
         </div>
         
         <div className="flex items-center space-x-6">
@@ -25,8 +22,6 @@ const Navbar = () => {
           </Button>
         </div>
       </div>
-    </nav>
-  );
+    </nav>;
 };
-
 export default Navbar;
