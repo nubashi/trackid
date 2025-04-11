@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Upload, FileAudio, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
@@ -12,6 +12,7 @@ interface FileUploadProps {
 const FileUpload: React.FC<FileUploadProps> = ({ onFileSelected, isLoading }) => {
   const [dragActive, setDragActive] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -35,22 +36,32 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileSelected, isLoading }) =>
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    if (e.target.files) {
+    if (e.target.files && e.target.files.length > 0) {
       handleFiles(e.target.files);
     }
+  };
+
+  const handleButtonClick = () => {
+    fileInputRef.current?.click();
   };
 
   const handleFiles = (files: FileList) => {
     if (files.length) {
       const file = files[0];
-      const validTypes = ['audio/mpeg', 'audio/wav', 'audio/x-wav', 'audio/wave', 'audio/x-m4a', 'audio/mp3'];
+      const validTypes = ['audio/mpeg', 'audio/wav', 'audio/x-wav', 'audio/wave', 'audio/x-m4a', 'audio/mp3', 'audio/aac', 'audio/ogg'];
       
-      if (validTypes.includes(file.type)) {
+      if (validTypes.includes(file.type) || file.name.endsWith('.mp3') || file.name.endsWith('.wav') || file.name.endsWith('.m4a')) {
         setSelectedFile(file);
-        onFileSelected(file);
+        toast.success(`Archivo "${file.name}" seleccionado correctamente`);
       } else {
         toast.error("Por favor selecciona un archivo de audio válido (MP3, WAV, M4A)");
       }
+    }
+  };
+
+  const handleAnalyzeClick = () => {
+    if (selectedFile) {
+      onFileSelected(selectedFile);
     }
   };
 
@@ -91,26 +102,26 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileSelected, isLoading }) =>
           )}
           
           <div className="flex gap-3 mt-4">
-            <label className="cursor-pointer">
-              <input
-                type="file"
-                className="hidden"
-                accept="audio/mpeg, audio/wav, audio/x-wav, audio/wave, audio/x-m4a"
-                onChange={handleChange}
-                disabled={isLoading}
-              />
-              <Button 
-                variant={selectedFile ? "outline" : "default"} 
-                disabled={isLoading}
-              >
-                {selectedFile ? "Cambiar archivo" : "Seleccionar archivo"}
-              </Button>
-            </label>
+            <input
+              ref={fileInputRef}
+              type="file"
+              className="hidden"
+              accept="audio/mpeg,.mp3,audio/wav,.wav,audio/x-wav,audio/wave,audio/x-m4a,.m4a,audio/aac,.aac,audio/ogg,.ogg"
+              onChange={handleChange}
+              disabled={isLoading}
+            />
+            <Button 
+              variant={selectedFile ? "outline" : "default"} 
+              onClick={handleButtonClick}
+              disabled={isLoading}
+            >
+              {selectedFile ? "Cambiar archivo" : "Seleccionar archivo"}
+            </Button>
             
             {selectedFile && (
               <Button 
                 variant="default" 
-                onClick={() => onFileSelected(selectedFile)}
+                onClick={handleAnalyzeClick}
                 disabled={isLoading}
               >
                 {isLoading ? "Analizando..." : "Analizar beat"}

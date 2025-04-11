@@ -7,43 +7,46 @@ import ResultsList from '@/components/ResultsList';
 import { MatchResult } from '@/components/ResultCard';
 import { analyzeAudioFile } from '@/services/acoustidService';
 import { toast } from 'sonner';
-import { Search, FileAudio } from 'lucide-react';
+import { Search, FileAudio, Shield } from 'lucide-react';
 
 const Index = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [results, setResults] = useState<MatchResult[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
+  const [audioFile, setAudioFile] = useState<File | null>(null);
 
   const handleFileSelected = async (file: File) => {
     try {
       setIsAnalyzing(true);
       setHasSearched(false);
+      setAudioFile(file);
       
-      // Check file size (max 10MB)
+      // Comprobamos el tamaño del archivo (máximo 10MB)
       if (file.size > 10 * 1024 * 1024) {
         toast.error("El archivo es demasiado grande. El tamaño máximo es 10MB.");
         setIsAnalyzing(false);
         return;
       }
       
-      // Reset previous results
+      // Reiniciamos los resultados previos
       setResults([]);
       
-      // Analyze the file
+      // Analizamos el archivo
+      toast.info("Analizando tu beat, esto puede tardar unos segundos...");
       const matchResults = await analyzeAudioFile(file);
       
-      // Update results
+      // Actualizamos los resultados
       setResults(matchResults);
       setHasSearched(true);
       
-      // Show appropriate toast
+      // Mostramos el toast adecuado
       if (matchResults.length > 0) {
         toast.success(`Se encontraron ${matchResults.length} coincidencias para tu beat.`);
       } else {
         toast.info("No se encontraron coincidencias para este beat.");
       }
     } catch (error) {
-      console.error('Error analyzing file:', error);
+      console.error('Error al analizar el archivo:', error);
       toast.error("Hubo un error al analizar el archivo. Por favor, inténtalo de nuevo.");
     } finally {
       setIsAnalyzing(false);
@@ -79,12 +82,12 @@ const Index = () => {
             {hasSearched && results.length === 0 && !isAnalyzing && (
               <div className="text-center py-10">
                 <div className="flex flex-col items-center space-y-4">
-                  <div className="p-4 rounded-full bg-muted">
-                    <Search className="h-6 w-6 text-muted-foreground" />
+                  <div className="p-4 rounded-full bg-green-500/20">
+                    <Shield className="h-6 w-6 text-green-500" />
                   </div>
-                  <h3 className="text-xl font-medium">No se encontraron coincidencias</h3>
+                  <h3 className="text-xl font-medium">¡Beat original!</h3>
                   <p className="text-muted-foreground max-w-md">
-                    No hemos detectado que tu beat haya sido utilizado en plataformas de streaming.
+                    No hemos detectado que tu beat "{audioFile?.name}" haya sido utilizado en plataformas de streaming.
                   </p>
                 </div>
               </div>
