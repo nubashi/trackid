@@ -61,7 +61,7 @@ const Index = () => {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">
             <h1 className="text-5xl font-bold mb-3 text-foreground">
-              <span className="text-beat-brightPurple">Beat</span> Detective
+              <span className="text-beat-brightPurple">Track</span>ID
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Descubre si tu beat ha sido utilizado en plataformas de streaming mediante tecnología de huellas digitales de audio
@@ -145,7 +145,7 @@ const Index = () => {
       <footer className="py-6 border-t border-border mt-12">
         <div className="container mx-auto px-4">
           <p className="text-center text-sm text-muted-foreground">
-            © 2025 Beat Detective | Desarrollado para proteger la propiedad intelectual de productores musicales
+            © 2025 TrackID | Desarrollado para proteger la propiedad intelectual de productores musicales
           </p>
         </div>
       </footer>
