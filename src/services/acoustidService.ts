@@ -1,6 +1,6 @@
 
 import { MatchResult } from '@/components/ResultCard';
-import { BACKEND_API_URL } from './api/config';
+import { TRACKID_API_URL } from './api/config';
 
 export const analyzeAudioFile = async (file: File): Promise<MatchResult[]> => {
   try {
@@ -10,8 +10,8 @@ export const analyzeAudioFile = async (file: File): Promise<MatchResult[]> => {
     const formData = new FormData();
     formData.append('audioFile', file);
     
-    // Send file to backend for analysis
-    const response = await fetch(`${BACKEND_API_URL}/api/analyze`, {
+    // Send file to the real API endpoint
+    const response = await fetch(TRACKID_API_URL, {
       method: 'POST',
       body: formData,
     });
