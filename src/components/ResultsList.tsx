@@ -80,7 +80,7 @@ const ResultsList: React.FC<ResultsListProps> = ({ results }) => {
           <Button 
             variant="outline" 
             onClick={handleShareResults}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 border-beat-vibrantPurple/50 text-beat-vibrantPurple hover:bg-beat-vibrantPurple/10"
           >
             <Share2 size={16} />
             Compartir
@@ -88,7 +88,7 @@ const ResultsList: React.FC<ResultsListProps> = ({ results }) => {
           <Button 
             variant="default" 
             onClick={handleGenerateReport}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 bg-beat-vibrantPurple hover:bg-beat-vibrantPurple/90 text-white"
           >
             <Download size={16} />
             Generar Informe

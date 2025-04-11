@@ -68,10 +68,15 @@ export default {
 					purple: '#9b87f5',
 					darkPurple: '#1A1F2C',
 					lightPurple: '#D6BCFA',
+					brightPurple: '#7C3AED',
+					vibrantPurple: '#8B5CF6',
+					neonPurple: '#A78BFA',
 					gray: '#8E9196',
 					softGray: '#F1F0FB',
 					brightBlue: '#1EAEDB',
-					darkCharcoal: '#221F26',
+					darkCharcoal: '#1C1B22',
+					yellow: '#FFD166',
+					mint: '#9AE6B4',
 				}
 			},
 			borderRadius: {

@@ -68,8 +68,8 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileSelected, isLoading }) =>
   return (
     <div className="w-full max-w-2xl mx-auto">
       <div 
-        className={`border-2 border-dashed rounded-xl p-10 text-center transition-all ${
-          dragActive ? "border-beat-purple bg-beat-purple/5" : "border-border"
+        className={`border-2 border-dashed rounded-2xl p-10 text-center transition-all ${
+          dragActive ? "border-beat-vibrantPurple bg-beat-vibrantPurple/10" : "border-border"
         }`}
         onDragEnter={handleDrag}
         onDragLeave={handleDrag}
@@ -78,11 +78,11 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileSelected, isLoading }) =>
       >
         <div className="flex flex-col items-center justify-center space-y-4">
           {selectedFile ? (
-            <div className="flex items-center justify-center mb-4 w-16 h-16 rounded-full bg-beat-purple/20">
-              <FileAudio className="h-8 w-8 text-beat-purple" />
+            <div className="flex items-center justify-center mb-4 w-16 h-16 rounded-xl bg-beat-vibrantPurple/20">
+              <FileAudio className="h-8 w-8 text-beat-vibrantPurple" />
             </div>
           ) : (
-            <div className="flex items-center justify-center mb-4 w-16 h-16 rounded-full bg-muted">
+            <div className="flex items-center justify-center mb-4 w-16 h-16 rounded-xl bg-muted">
               <Upload className="h-8 w-8 text-muted-foreground" />
             </div>
           )}
@@ -114,6 +114,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileSelected, isLoading }) =>
               variant={selectedFile ? "outline" : "default"} 
               onClick={handleButtonClick}
               disabled={isLoading}
+              className={selectedFile ? "border-beat-vibrantPurple text-beat-vibrantPurple hover:bg-beat-vibrantPurple/10" : "bg-beat-vibrantPurple hover:bg-beat-vibrantPurple/90 text-white"}
             >
               {selectedFile ? "Cambiar archivo" : "Seleccionar archivo"}
             </Button>
@@ -123,6 +124,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileSelected, isLoading }) =>
                 variant="default" 
                 onClick={handleAnalyzeClick}
                 disabled={isLoading}
+                className="bg-beat-vibrantPurple hover:bg-beat-vibrantPurple/90 text-white"
               >
                 {isLoading ? "Analizando..." : "Analizar beat"}
               </Button>

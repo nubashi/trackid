@@ -8,13 +8,13 @@
     --background: 240 10% 9%;
     --foreground: 0 0% 98%;
 
-    --card: 240 10% 6%;
+    --card: 240 10% 12%;
     --card-foreground: 0 0% 98%;
 
-    --popover: 240 10% 6%;
+    --popover: 240 10% 12%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 255 80% 75%;
+    --primary: 265 83% 73%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 240 10% 12%;
@@ -23,7 +23,7 @@
     --muted: 240 10% 15%;
     --muted-foreground: 240 5% 64.9%;
 
-    --accent: 255 70% 90%;
+    --accent: 265 75% 90%;
     --accent-foreground: 240 10% 3.9%;
 
     --destructive: 0 62.8% 30.6%;
@@ -31,9 +31,9 @@
 
     --border: 240 10% 20%;
     --input: 240 10% 14%;
-    --ring: 255 70% 75%;
+    --ring: 265 70% 75%;
 
-    --radius: 0.75rem;
+    --radius: 1.25rem;
   }
 }
 
@@ -50,14 +50,30 @@
 
 @layer components {
   .waveform-bar {
-    @apply h-24 w-1 bg-beat-purple opacity-60 mx-[1px] rounded-full transform origin-bottom;
+    @apply h-24 w-1 bg-beat-brightPurple opacity-60 mx-[1px] rounded-full transform origin-bottom;
   }
   
   .result-card {
-    @apply bg-card p-4 rounded-xl border border-border transition-all duration-300 hover:border-beat-purple;
+    @apply bg-card p-6 rounded-2xl border border-border transition-all duration-300 hover:border-beat-purple;
   }
   
   .glassmorphism {
-    @apply backdrop-blur-sm bg-black/40 border border-white/10 rounded-xl;
+    @apply backdrop-blur-sm bg-black/40 border border-white/10 rounded-2xl;
+  }
+  
+  .colored-card {
+    @apply rounded-2xl p-6 border border-white/10 transition-all duration-300;
+  }
+  
+  .purple-card {
+    @apply colored-card bg-beat-vibrantPurple/90;
+  }
+  
+  .yellow-card {
+    @apply colored-card bg-beat-yellow/90;
+  }
+  
+  .mint-card {
+    @apply colored-card bg-beat-mint/90;
   }
 }

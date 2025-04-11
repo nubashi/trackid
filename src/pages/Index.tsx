@@ -7,7 +7,7 @@ import ResultsList from '@/components/ResultsList';
 import { MatchResult } from '@/components/ResultCard';
 import { analyzeAudioFile } from '@/services/acoustidService';
 import { toast } from 'sonner';
-import { Search, FileAudio, Shield } from 'lucide-react';
+import { Search, FileAudio, Shield, Music, Sparkles } from 'lucide-react';
 
 const Index = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -60,7 +60,9 @@ const Index = () => {
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold mb-3 text-foreground">Beat Detective</h1>
+            <h1 className="text-5xl font-bold mb-3 text-foreground">
+              <span className="text-beat-brightPurple">Beat</span> Detective
+            </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Descubre si tu beat ha sido utilizado en plataformas de streaming mediante tecnología de huellas digitales de audio
             </p>
@@ -98,16 +100,42 @@ const Index = () => {
             )}
             
             {!isAnalyzing && !hasSearched && (
-              <div className="glassmorphism p-6 text-center max-w-xl mx-auto mt-12">
-                <div className="flex items-center justify-center mb-4">
-                  <FileAudio className="h-6 w-6 text-beat-purple mr-2" />
-                  <h2 className="text-lg font-medium">¿Cómo funciona?</h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
+                <div className="purple-card">
+                  <div className="flex items-center mb-4">
+                    <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center mr-3">
+                      <FileAudio className="h-5 w-5 text-white" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-white">Análisis de Audio</h3>
+                  </div>
+                  <p className="text-sm text-white/80">
+                    Conectamos con API de reconocimiento para identificar si tu beat aparece en canciones publicadas.
+                  </p>
                 </div>
-                <p className="text-sm text-muted-foreground">
-                  Beat Detective utiliza tecnología de huellas digitales de audio para comparar tu beat con 
-                  millones de canciones en plataformas de streaming. Simplemente sube tu archivo 
-                  de audio y nuestra herramienta te mostrará si ha sido utilizado y dónde.
-                </p>
+                
+                <div className="yellow-card">
+                  <div className="flex items-center mb-4">
+                    <div className="h-10 w-10 rounded-full bg-black/20 flex items-center justify-center mr-3">
+                      <Search className="h-5 w-5 text-black" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-black">Detección Precisa</h3>
+                  </div>
+                  <p className="text-sm text-black/80">
+                    Tecnología avanzada para identificar similitudes entre tu producción y música comercial.
+                  </p>
+                </div>
+                
+                <div className="mint-card">
+                  <div className="flex items-center mb-4">
+                    <div className="h-10 w-10 rounded-full bg-black/20 flex items-center justify-center mr-3">
+                      <Music className="h-5 w-5 text-black" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-black">Reportes Detallados</h3>
+                  </div>
+                  <p className="text-sm text-black/80">
+                    Genera informes completos sobre coincidencias encontradas para gestionar tus derechos de autor.
+                  </p>
+                </div>
               </div>
             )}
           </div>

@@ -29,7 +29,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ result }) => {
   const matchPercentage = Math.round(score * 100);
   
   return (
-    <div className="result-card">
+    <div className="result-card hover:shadow-lg hover:shadow-beat-vibrantPurple/5">
       <div className="flex justify-between items-start mb-3">
         <div>
           <h3 className="text-lg font-semibold">{title}</h3>
@@ -38,7 +38,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ result }) => {
             <span className="text-sm">{artist}</span>
           </div>
         </div>
-        <div className="px-2 py-1 bg-beat-purple/10 rounded text-beat-purple text-sm font-medium">
+        <div className="px-3 py-1.5 bg-beat-vibrantPurple/20 rounded-lg text-beat-vibrantPurple text-sm font-medium">
           {matchPercentage}% coincidencia
         </div>
       </div>
@@ -62,7 +62,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ result }) => {
             <div className="flex flex-wrap gap-2">
               {streamingLinks.spotify && (
                 <a href={streamingLinks.spotify} target="_blank" rel="noopener noreferrer">
-                  <Button variant="outline" size="sm" className="h-8">
+                  <Button variant="outline" size="sm" className="h-8 rounded-xl border-beat-vibrantPurple/30 text-beat-vibrantPurple hover:bg-beat-vibrantPurple/10">
                     <Music className="h-3.5 w-3.5 mr-2" />
                     Spotify
                   </Button>
@@ -70,7 +70,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ result }) => {
               )}
               {streamingLinks.apple && (
                 <a href={streamingLinks.apple} target="_blank" rel="noopener noreferrer">
-                  <Button variant="outline" size="sm" className="h-8">
+                  <Button variant="outline" size="sm" className="h-8 rounded-xl border-beat-vibrantPurple/30 text-beat-vibrantPurple hover:bg-beat-vibrantPurple/10">
                     <Music className="h-3.5 w-3.5 mr-2" />
                     Apple
                   </Button>
@@ -78,7 +78,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ result }) => {
               )}
               {streamingLinks.youtube && (
                 <a href={streamingLinks.youtube} target="_blank" rel="noopener noreferrer">
-                  <Button variant="outline" size="sm" className="h-8">
+                  <Button variant="outline" size="sm" className="h-8 rounded-xl border-beat-vibrantPurple/30 text-beat-vibrantPurple hover:bg-beat-vibrantPurple/10">
                     <ExternalLink className="h-3.5 w-3.5 mr-2" />
                     YouTube
                   </Button>
