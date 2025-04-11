@@ -1,8 +1,9 @@
 
 import React from 'react';
 import ResultCard, { MatchResult } from './ResultCard';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, Download, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 interface ResultsListProps {
   results: MatchResult[];
@@ -40,20 +41,59 @@ const ResultsList: React.FC<ResultsListProps> = ({ results }) => {
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
+    
+    toast.success("Informe generado y descargado correctamente");
+  };
+  
+  const handleShareResults = () => {
+    // Crear un texto para compartir
+    const shareText = `He encontrado ${results.length} coincidencias para mi beat usando Beat Detective.\n\nCoincidencias destacadas:\n- ${results[0].title} por ${results[0].artist} (${results[0].score * 100}% coincidencia)`;
+    
+    // Compartir usando la API de Web Share si está disponible
+    if (navigator.share) {
+      navigator.share({
+        title: 'Resultados de Beat Detective',
+        text: shareText,
+        url: window.location.href,
+      })
+      .then(() => toast.success("Contenido compartido correctamente"))
+      .catch((error) => {
+        console.error('Error al compartir:', error);
+        copyToClipboard(shareText);
+      });
+    } else {
+      copyToClipboard(shareText);
+    }
+  };
+  
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text)
+      .then(() => toast.success("Texto copiado al portapapeles"))
+      .catch(() => toast.error("No se pudo copiar al portapapeles"));
   };
   
   return (
     <div className="space-y-6 max-w-2xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold">Resultados</h2>
-        <Button 
-          variant="outline" 
-          onClick={handleGenerateReport}
-          className="flex items-center gap-2"
-        >
-          <ExternalLink size={16} />
-          Generar Informe
-        </Button>
+        <div className="flex gap-2">
+          <Button 
+            variant="outline" 
+            onClick={handleShareResults}
+            className="flex items-center gap-2"
+          >
+            <Share2 size={16} />
+            Compartir
+          </Button>
+          <Button 
+            variant="default" 
+            onClick={handleGenerateReport}
+            className="flex items-center gap-2"
+          >
+            <Download size={16} />
+            Generar Informe
+          </Button>
+        </div>
       </div>
       
       {results.length > 0 ? (
