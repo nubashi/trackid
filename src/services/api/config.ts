@@ -8,6 +8,4 @@ export const SPOTIFY_CLIENT_ID = '430058562e93497fb745cebe4eb87790';
 export const SPOTIFY_API_URL = 'https://api.spotify.com/v1';
 
 // Backend API URL
-export const BACKEND_API_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://your-production-backend-url.com' // Cambiar a URL de producción cuando se despliegue
-  : 'http://localhost:3001';
+export const BACKEND_API_URL = 'http://localhost:3001';
