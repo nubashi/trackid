@@ -1,4 +1,3 @@
-
 const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
@@ -34,7 +33,6 @@ const upload = multer({
   storage, 
   limits: { fileSize: 20 * 1024 * 1024 }, // 20MB max size
   fileFilter: (req, file, cb) => {
-    // Check file types
     if (file.mimetype.startsWith('audio/') || 
         file.originalname.endsWith('.mp3') || 
         file.originalname.endsWith('.wav') || 
@@ -50,10 +48,10 @@ const upload = multer({
 const ACOUSTID_API_KEY = process.env.ACOUSTID_API_KEY || 'EIr8RJoY9K';
 const ACOUSTID_API_URL = process.env.ACOUSTID_API_URL || 'https://api.acoustid.org/v2/lookup';
 const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID || '430058562e93497fb745cebe4eb87790';
-const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET || ''; // Add your secret in production
+const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET || '';
 const SPOTIFY_API_URL = process.env.SPOTIFY_API_URL || 'https://api.spotify.com/v1';
 
-// Helper function to generate fingerprint using fpcalc
+// Helper function to generate fingerprint
 async function generateFingerprint(filePath) {
   try {
     const { stdout } = await execAsync(`fpcalc -json "${filePath}"`);
@@ -64,7 +62,7 @@ async function generateFingerprint(filePath) {
   }
 }
 
-// Helper function to query AcoustID API
+// Helper function to query AcoustID
 async function queryAcoustid(fingerprint, duration) {
   const params = new URLSearchParams({
     client: ACOUSTID_API_KEY,
@@ -78,28 +76,28 @@ async function queryAcoustid(fingerprint, duration) {
   return response.data;
 }
 
-// Helper function to process AcoustID results
+// Helper function to process results
 function processAcoustidResults(results) {
   const processedResults = [];
-  
+
   results.forEach((result, index) => {
     if (result.recordings && result.recordings.length > 0) {
       const recording = result.recordings[0];
-      
+
       processedResults.push({
         id: recording.id || `recording-${index}`,
         score: parseFloat(result.score.toFixed(2)) || 0.7,
         title: recording.title || 'Título desconocido',
         artist: recording.artists ? recording.artists[0].name : 'Artista desconocido',
-        album: recording.releases && recording.releases.length > 0 ? 
+        album: recording.releases && recording.releases.length > 0 ?
           recording.releases[0].title : 'Álbum desconocido',
-        releaseDate: recording.releases && recording.releases.length > 0 && recording.releases[0].date ? 
+        releaseDate: recording.releases && recording.releases.length > 0 && recording.releases[0].date ?
           recording.releases[0].date.year?.toString() || 'Desconocido' : 'Desconocido',
         streamingLinks: generateStreamingLinks(recording)
       });
     }
   });
-  
+
   return processedResults;
 }
 
@@ -108,7 +106,7 @@ function generateStreamingLinks(recording) {
   const title = recording.title || '';
   const artist = recording.artists ? recording.artists[0].name : '';
   const searchTerm = encodeURIComponent(`${title} ${artist}`.trim());
-  
+
   return {
     spotify: `https://open.spotify.com/search/${searchTerm}`,
     apple: `https://music.apple.com/search?term=${searchTerm}`,
@@ -116,40 +114,44 @@ function generateStreamingLinks(recording) {
   };
 }
 
-// Endpoint to analyze audio files
-app.post('/api/analyze', upload.single('audioFile'), async (req, res) => {
-  if (!req.file) {
+const handleAudioAnalysis = async (req, res) => {
+  console.log('🧾 Archivos recibidos:', req.files);
+  console.log('📦 Body:', req.body);
+
+  const file = req.files?.[0] || req.file;
+  if (!file) {
     return res.status(400).json({ error: 'No se subió ningún archivo' });
   }
 
   try {
-    const filePath = req.file.path;
-    
-    // Generate fingerprint
-    console.log(`Generando huella digital para: ${req.file.originalname}`);
+    const filePath = file.path;
+    console.log(`🎧 Generando huella digital para: ${file.originalname}`);
     const fpData = await generateFingerprint(filePath);
-    
-    // Query AcoustID with the fingerprint
-    console.log(`Consultando AcoustID con duración: ${fpData.duration}s`);
+    console.log(`🔍 Consultando AcoustID con duración: ${fpData.duration}s`);
     const acoustidResponse = await queryAcoustid(fpData.fingerprint, fpData.duration);
-    
-    // Process results
+
     let results = [];
     if (acoustidResponse.status === 'ok' && acoustidResponse.results && acoustidResponse.results.length > 0) {
       results = processAcoustidResults(acoustidResponse.results);
     }
-    
-    // Clean up the uploaded file
+
     fs.unlinkSync(filePath);
-    
+
     return res.json(results);
   } catch (error) {
-    console.error('Error al procesar el archivo:', error);
+    console.error('❌ Error al procesar el archivo:', error);
     return res.status(500).json({ error: 'Error al procesar el archivo de audio', message: error.message });
   }
-});
+};
 
-// Start the server
+// Endpoint original
+app.post('/api/analyze', upload.any(), handleAudioAnalysis);
+
+// Alias para Lovable
+app.post('/fingerprint', upload.any(), handleAudioAnalysis);
+
+
+// Iniciar el servidor
 app.listen(port, () => {
-  console.log(`Servidor backend ejecutándose en http://localhost:${port}`);
+  console.log(`🚀 Servidor backend ejecutándose en http://localhost:${port}`);
 });
